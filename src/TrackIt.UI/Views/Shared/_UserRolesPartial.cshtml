@@ -1,0 +1,35 @@
+﻿@model TrackIt.UI.Models.UserRolesViewModel
+
+
+<table class="table">
+    <tr>
+        <td>Name</td>
+        <td></td>
+    </tr>
+
+    @foreach (var item in Model.Roles) {
+        <tr>
+            <td>@item.Key</td>
+            <td>
+                <div>
+                    @if (item.Value)
+                    {
+                        @Ajax.ActionLink("Remove", "RemoveRole", new { roleName = item.Key, userId = Model.UserId }, new AjaxOptions()
+                   { OnSuccess = "Reload"  })
+                    }
+                    else
+                    {
+                        @Ajax.ActionLink("Add", "AddRole", new { roleName = item.Key, userId = Model.UserId }, new AjaxOptions()
+                   { OnSuccess = "Reload" })
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    function Reload() {
+        window.location.reload();
+    }
+</script>

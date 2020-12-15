@@ -1,0 +1,64 @@
+﻿@model TrackIt.UI.Models.ManageRolesViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table">
+
+    <tr>
+        <th>User Name</th>
+    </tr>
+
+    @foreach (var item in Model.AvailableUsers)
+    {
+        <tr>
+            <th>@Ajax.ActionLink(item.UserName, "GetRolesFor", new { Id = item.Id }, 
+               new AjaxOptions() { OnComplete = "onComplete", UpdateTargetId = "user_roles"
+               , InsertionMode = InsertionMode.Replace })</th>
+        </tr>
+    }
+
+</table>
+
+@*<div id="user_roles">
+   @Html.Partial("_UserRolesPartial", new TrackIt.UI.Models.UserRolesViewModel() 
+        { Roles = Model.AvailableRoles, UserId = Model.CurrentUserId })
+</div>*@
+
+<table class="table" id="user_roles">
+    <tr>
+        <td>Name</td>
+        <td></td>
+    </tr>
+
+    @foreach (var item in Model.AvailableRoles)
+    {
+        <tr>
+            <td>@item.Key</td>
+            <td>
+                <div>
+                    @if (item.Value)
+                    {
+                        @Ajax.ActionLink("Remove", "RemoveRole", new { roleName = item.Key, userId = Model.CurrentUserId }, new AjaxOptions()
+                   {  })
+                    }
+                    else
+                    {
+                        @Ajax.ActionLink("Add", "AddRole", new { roleName = item.Key, userId = Model.CurrentUserId }, new AjaxOptions()
+                   {  })
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    function onComplete(event) {
+        event.preventDefault;
+    }
+    function Reload() {
+        window.location.reload();
+    }
+</script>

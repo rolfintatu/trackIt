@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TrackIt.UI.Models.RoleListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" id="role_table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Ajax.ActionLink("Delete", "Delete", new { id = item.Id }, new AjaxOptions()
+       { UpdateTargetId = "role_table" })
+            </td>
+    </tr>
+}
+
+</table>
+
+<script>
+    function onComplete(event) {
+        event.preventDefault();
+    }
+</script>
