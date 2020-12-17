@@ -166,6 +166,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregates\Enums\TicketState.cs" />
+    <Compile Include="Aggregates\Exceptions\WorkerAlreadyAssigned.cs" />
+    <Compile Include="Aggregates\ProjectAggregate\Project.cs" />
+    <Compile Include="Aggregates\ProjectAggregate\Ticket.cs" />
+    <Compile Include="Aggregates\ProjectAggregate\Worker.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
