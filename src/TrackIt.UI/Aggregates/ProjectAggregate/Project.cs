@@ -5,6 +5,7 @@ using System.Web;
 using TrackIt.UI.Aggregates.Enums;
 using TrackIt.UI.Aggregates.Exceptions;
 using static TrackIt.UI.Aggregates.Exceptions.WorkerAlreadyAssigned;
+using static TrackIt.UI.Aggregates.Exceptions.WorkerIsNotAssign;
 
 namespace TrackIt.UI.Aggregates.ProjectAggregate
 {
@@ -31,8 +32,16 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
         public IReadOnlyList<Worker> Workers
             => _workers.AsReadOnly();
 
+        //Not persistent
+        public bool workersChange { get; protected set; } = false;
+        public bool ticketsChagne { get; protected set; } = false;
+
+
         public void CreateTicket(string name, string description, string assignTo)
         {
+            if (_tickets is null)
+                _tickets = new List<Ticket>();
+
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("");
 
@@ -40,6 +49,8 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
                 throw new ArgumentNullException("");
 
             _tickets.Add(new Ticket(this.Id, name, description, TicketState.New, assignTo));
+
+            ticketsChagne = true;
         }
 
         public void CloseTicket(Guid ticketId)
@@ -49,14 +60,33 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
             if (ticket != null)
                 ticket.ChangeTicketState(TicketState.Close);
 
+            ticketsChagne = true;
         }
 
         public void AssignNewWorker(string workerId)
         {
+            if (_workers is null)
+                _workers = new List<Worker>();
+
             if (!_workers.Any(x => x.Id.Equals(workerId)))
                 _workers.Add(new Worker(workerId));
             else
                 throw new WorkerAlreadyAssignedException();
+
+            workersChange = true;
+        }
+
+        public void DismissWorker(string workerId)
+        {
+
+            Worker worker = _workers.FirstOrDefault(x => x.Id == workerId);
+
+            if (!(worker is null))
+                _workers.Remove(worker);
+            else
+                throw new WorkerIsNotAssignException();
+
+            workersChange = true;
         }
 
         public static Project CreateInstance(string projectName, string description)

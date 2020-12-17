@@ -23,6 +23,10 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 
         public string AssignTo { get; protected set; }
 
+        // Not persistent
+        public DbState DbState { get; set; }
+
+
         public void ChangeTicketState(TicketState ticketState)
             => this.TicketState = ticketState;
     }

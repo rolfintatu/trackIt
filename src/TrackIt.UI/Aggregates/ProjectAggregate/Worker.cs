@@ -1,4 +1,5 @@
 ﻿using System;
+using TrackIt.UI.Aggregates.Enums;
 
 namespace TrackIt.UI.Aggregates.ProjectAggregate
 {
@@ -13,5 +14,9 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
         public Guid ProjectId { get; protected set; }
 
         public string WorkerImage { get; protected set; }
+
+
+        // Not persistent
+        public DbState DbState { get; set; }
     }
 }
