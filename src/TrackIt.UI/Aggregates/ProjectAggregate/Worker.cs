@@ -12,6 +12,8 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 
         public string Id { get; protected set; }
         public Guid ProjectId { get; protected set; }
+        public virtual Project Project { get; protected set; }
+
 
         public string WorkerImage { get; protected set; }
 
