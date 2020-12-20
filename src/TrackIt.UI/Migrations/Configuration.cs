@@ -1,4 +1,4 @@
-namespace TrackIt.UI.Migrations
+﻿namespace TrackIt.UI.Migrations
 {
     using System;
     using System.Data.Entity;
@@ -10,14 +10,13 @@ namespace TrackIt.UI.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "TrackIt.UI.Models.ApplicationDbContext";
         }
 
         protected override void Seed(TrackIt.UI.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
         }
     }
