@@ -11,12 +11,18 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 {
     public class Project
     {
-        protected Project() { }
+        protected Project() {
+            _workers = new List<Worker>();
+            _tickets = new List<Ticket>();
+        }
 
-        protected Project(string projectName, string description)
+        protected Project(Guid id, string projectName, string description)
         {
+            Id = id;
             ProjectName = projectName;
             Description = description;
+            _workers = new List<Worker>();
+            _tickets = new List<Ticket>();
         }
 
         public Guid Id { get; protected set; }
@@ -25,12 +31,12 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 
 
         private List<Ticket> _tickets;
-        public IReadOnlyList<Ticket> Tickets 
-            => _tickets.AsReadOnly();
+        public  IList<Ticket> Tickets 
+            => _tickets;
 
         private List<Worker> _workers;
-        public IReadOnlyList<Worker> Workers
-            => _workers.AsReadOnly();
+        public IList<Worker> Workers
+            => _workers;
 
         //Not persistent
         public bool workersChange { get; protected set; } = false;
@@ -98,7 +104,7 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
             if (string.IsNullOrEmpty(description))
                 throw new ArgumentNullException("");
 
-            return new Project(projectName, description);
+            return new Project(Guid.NewGuid() ,projectName, description);
         }
     }
 }

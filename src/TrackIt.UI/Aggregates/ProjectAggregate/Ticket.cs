@@ -5,6 +5,8 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 {
     public class Ticket
     {
+        public Ticket() { }
+
         public Ticket(Guid projectId, string name, string description, TicketState ticketState, string assignTo)
         {
             ProjectId = projectId;
