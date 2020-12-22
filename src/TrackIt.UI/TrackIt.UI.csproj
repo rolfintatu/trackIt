@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AspNet.Identity.MongoDB, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AspNet.Identity.MongoDB.2.0.8\lib\net45\AspNet.Identity.MongoDB.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -79,6 +82,15 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.Security.Twitter.4.1.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.0.0.828, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Bson.2.0.0\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.0.0.828, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.2.0.0\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.0.0.828, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.Core.2.0.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -166,8 +178,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregates\Enums\DbState.cs" />
     <Compile Include="Aggregates\Enums\TicketState.cs" />
     <Compile Include="Aggregates\Exceptions\WorkerAlreadyAssigned.cs" />
+    <Compile Include="Aggregates\Exceptions\WorkerIsNotAssign.cs" />
     <Compile Include="Aggregates\ProjectAggregate\Project.cs" />
     <Compile Include="Aggregates\ProjectAggregate\Ticket.cs" />
     <Compile Include="Aggregates\ProjectAggregate\Worker.cs" />
@@ -180,32 +194,34 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageRolesController.cs" />
     <Compile Include="Controllers\PortalController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202012131115221_InitialCreate.cs" />
-    <Compile Include="Migrations\202012131115221_InitialCreate.Designer.cs">
-      <DependentUpon>202012131115221_InitialCreate.cs</DependentUpon>
+    <Compile Include="Infrastructure\ProjectContext.cs" />
+    <Compile Include="Infrastructure\ProjectRepository.cs" />
+    <Compile Include="Migrations\202012200905228_Init.cs" />
+    <Compile Include="Migrations\202012200905228_Init.designer.cs">
+      <DependentUpon>202012200905228_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202012140903303_SomethingNew.cs" />
-    <Compile Include="Migrations\202012140903303_SomethingNew.Designer.cs">
-      <DependentUpon>202012140903303_SomethingNew.cs</DependentUpon>
+    <Compile Include="Migrations\202012200910219_InitProjectAggregate.cs" />
+    <Compile Include="Migrations\202012200910219_InitProjectAggregate.designer.cs">
+      <DependentUpon>202012200910219_InitProjectAggregate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202012140959208_New.cs" />
-    <Compile Include="Migrations\202012140959208_New.Designer.cs">
-      <DependentUpon>202012140959208_New.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012141018575_ss.cs" />
-    <Compile Include="Migrations\202012141018575_ss.Designer.cs">
-      <DependentUpon>202012141018575_ss.cs</DependentUpon>
+    <Compile Include="Migrations\202012210808109_AddRef.cs" />
+    <Compile Include="Migrations\202012210808109_AddRef.designer.cs">
+      <DependentUpon>202012210808109_AddRef.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CreateProjectViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageRolesViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProjectDetailsViewModel.cs" />
+    <Compile Include="Models\ProjectViewModel.cs" />
     <Compile Include="Models\RoleListViewModel.cs" />
     <Compile Include="Models\UserRolesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -272,6 +288,9 @@
     <Content Include="Views\ManageRoles\Index.cshtml" />
     <Content Include="Views\Shared\_UserRolesPartial.cshtml" />
     <Content Include="Views\Portal\Index.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\Project\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -290,17 +309,14 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202012131115221_InitialCreate.resx">
-      <DependentUpon>202012131115221_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202012200905228_Init.resx">
+      <DependentUpon>202012200905228_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012140903303_SomethingNew.resx">
-      <DependentUpon>202012140903303_SomethingNew.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202012200910219_InitProjectAggregate.resx">
+      <DependentUpon>202012200910219_InitProjectAggregate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012140959208_New.resx">
-      <DependentUpon>202012140959208_New.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012141018575_ss.resx">
-      <DependentUpon>202012141018575_ss.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202012210808109_AddRef.resx">
+      <DependentUpon>202012210808109_AddRef.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
