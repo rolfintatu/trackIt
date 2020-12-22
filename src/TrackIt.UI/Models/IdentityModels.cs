@@ -1,8 +1,10 @@
 ﻿ using System.Data.Entity;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TrackIt.UI.Aggregates.ProjectAggregate;
 
 namespace TrackIt.UI.Models
 {
@@ -24,6 +26,10 @@ namespace TrackIt.UI.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
+        DbSet<Project> Projects { get; set; }
+        DbSet<Worker> Workers { get; set; }
+        DbSet<Ticket> Tickets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
