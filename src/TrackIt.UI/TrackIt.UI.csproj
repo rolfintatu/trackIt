@@ -189,19 +189,6 @@
     </Compile>
     <Compile Include="Infrastructure\ProjectContext.cs" />
     <Compile Include="Infrastructure\ProjectRepository.cs" />
-    <Compile Include="Migrations\202012200905228_Init.cs" />
-    <Compile Include="Migrations\202012200905228_Init.designer.cs">
-      <DependentUpon>202012200905228_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012200910219_InitProjectAggregate.cs" />
-    <Compile Include="Migrations\202012200910219_InitProjectAggregate.designer.cs">
-      <DependentUpon>202012200910219_InitProjectAggregate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012210808109_AddRef.cs" />
-    <Compile Include="Migrations\202012210808109_AddRef.designer.cs">
-      <DependentUpon>202012210808109_AddRef.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CreateProjectViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
@@ -295,17 +282,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202012200905228_Init.resx">
-      <DependentUpon>202012200905228_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012200910219_InitProjectAggregate.resx">
-      <DependentUpon>202012200910219_InitProjectAggregate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012210808109_AddRef.resx">
-      <DependentUpon>202012210808109_AddRef.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
