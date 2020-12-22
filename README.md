@@ -3,5 +3,4 @@
 # trackIt
 Helps you and your team to easily track you project issues.
 
-# Build status
 [![Build Status](https://dev.azure.com/rolfindc/trackId/_apis/build/status/trackId-ASP.NET-CI?branchName=main)](https://dev.azure.com/rolfindc/trackId/_build/latest?definitionId=2&branchName=main)
