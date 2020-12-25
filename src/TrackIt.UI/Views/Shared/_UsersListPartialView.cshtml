@@ -1,0 +1,33 @@
+﻿@model ICollection<TrackIt.UI.Models.ApplicationUserViewModel>
+
+
+<table class="table" id="replace_table">
+    <tr>
+
+        <th>
+            Name
+        </th>
+
+        <th></th>
+
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @if (item.InProject == false)
+                {
+                    @Ajax.ActionLink("Add", "AddWorkerToProject", new { workerId = item.Id, workers = Model }, new AjaxOptions
+               { OnSuccess = "OnSuccess('" + @item.Id+ "')", UpdateTargetId = "replace_table", InsertionMode = InsertionMode.ReplaceWith })
+               }
+                else
+                    {
+                        @Ajax.ActionLink("Remove", "", new { workerId = item.Id }, new AjaxOptions() {} )
+                }
+            </td>
+        </tr>
+    }
+</table>

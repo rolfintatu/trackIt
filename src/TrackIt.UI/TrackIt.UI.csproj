@@ -191,7 +191,13 @@
     </Compile>
     <Compile Include="Infrastructure\ProjectContext.cs" />
     <Compile Include="Infrastructure\ProjectRepository.cs" />
+    <Compile Include="Migrations\202012251144197_ChangeWorkerStructure.cs" />
+    <Compile Include="Migrations\202012251144197_ChangeWorkerStructure.designer.cs">
+      <DependentUpon>202012251144197_ChangeWorkerStructure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\CreateProjectViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -375,6 +381,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\_UsersListPartialView.cshtml" />
+    <Content Include="Views\Shared\_ProjectWorkersPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -387,6 +395,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202012251144197_ChangeWorkerStructure.resx">
+      <DependentUpon>202012251144197_ChangeWorkerStructure.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

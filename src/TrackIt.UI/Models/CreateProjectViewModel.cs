@@ -10,12 +10,12 @@ namespace TrackIt.UI.Models
 
         public CreateProjectViewModel()
         {
-            Workers = new Dictionary<ApplicationUser, bool>();
+            Workers = new List<ApplicationUserViewModel>();
         }
 
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public Dictionary<ApplicationUser, bool> Workers { get; set; }
+        public List<ApplicationUserViewModel> Workers { get; set; }
     }
 }

@@ -4,83 +4,89 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>CreateProjectViewModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal">
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+
+
+    <div id="update_table">
+
+        <h2>Workers</h2>
+
+        @for(int i = 0; i <= Model.Workers.Count - 1; i++)
+        {
+            if(Model.Workers[i].InProject == true)
+            {
+                @Html.HiddenFor(model => model.Workers[i].Id)
+                <p>@Model.Workers[i].Name</p>
+            }
+        }
+
+    </div>
+
+</div>
+}
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Add workers
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-greenblue">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("_UsersListPartialView", Model.Workers)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-}
-
-@if(Model != null || Model.Workers != null)
-{
-    <table class="table">
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-            
-            </th>
-        </tr>
-
-        @foreach (var item in Model.Workers)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Key.UserName)
-                </td>
-                <td>
-                    @if (item.Value == false)
-                    {
-                        @Ajax.ActionLink("Add", "AddWorkerToProject", new { workerId = item.Key.Id }, new AjaxOptions()
-                   { OnSuccess = "OnSuccess" })
-                   }
-                    else
-                        {
-                            @Ajax.ActionLink("Remove", "", new AjaxOptions())
-                    }
-                </td>
-            </tr>
-        }
-
-    </table>
-}
+</div>
 
 
-<script>
-    function OnSuccess(event) {
-        event.preventDefault();
-    }
-</script>
+
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function OnSuccess(id) {
+            //event.preventDefault;
+            //$("#update_table").append("<p>" + id + "</p>");
+            $("#update_table").load(location.href + " #update_table");
+        }
+
+    </script>
 }

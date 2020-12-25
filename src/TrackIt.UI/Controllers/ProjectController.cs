@@ -58,37 +58,26 @@ namespace TrackIt.UI.Controllers
         {
             CreateProjectViewModel model = new CreateProjectViewModel();
 
-            List<string> tempModel = 
-                (List<string>)TempData["newModel"];
-
-            UserManager.Users.ToList().ForEach(x => {
-                model.Workers.Add(x, false);
-            });
-
-            if (tempModel is null || tempModel.Count() == 0)
+            if(Session["workersList"] is null)
             {
-                return View(model);
-            }
-            else
-            {
-                CreateProjectViewModel newModel = new CreateProjectViewModel();
-                newModel.Name = model.Name;
-                newModel.Description = model.Description;
-                newModel.Workers = new Dictionary<ApplicationUser, bool>();
-
-                model.Workers.ToList().ForEach(x =>
-                {
-                    tempModel.ForEach(y =>
+                UserManager.Users.ToList().ForEach(x => {
+                    model.Workers.Add(new ApplicationUserViewModel
                     {
-                        if (x.Key.Id == y)
-                            newModel.Workers.Add(x.Key, true);
-                        else
-                            newModel.Workers.Add(x.Key, false);
+                        Id = x.Id,
+                        Name = x.UserName,
+                        Image = null,
+                        InProject = false
                     });
                 });
 
-                return View(newModel);
+                Session.Add("workersList", model.Workers);
             }
+            else
+            {
+                model.Workers = (List<ApplicationUserViewModel>)Session["workersList"];
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -96,25 +85,30 @@ namespace TrackIt.UI.Controllers
         {
             Project project = Project.CreateInstance(model.Name, model.Description);
 
-            var workers = (List<string>)TempData["newModel"];
-
-            workers.ForEach(x =>
+            model.Workers.ForEach(x =>
             {
-                project.AssignNewWorker(x);
+                project.AssignNewWorker(x.Id);
             });
 
             await _repo.Update(project);
 
-            return View();
+            Session.Clear();
+
+            return RedirectToAction("Index");
         }
 
-        public void AddWorkerToProject(string workerId)
+        public PartialViewResult AddWorkerToProject(string workerId)
         {
-            List<string> workerAdded = new List<string>();
-            workerAdded.Add(workerId);
+            List<ApplicationUserViewModel> workerAdded = new List<ApplicationUserViewModel>();
+            var newWorker = UserManager.Users.Where(x => x.Id == workerId).FirstOrDefault();
 
-            TempData["newModel"] = workerAdded;
+            var allWorkers = (List<ApplicationUserViewModel>)Session["workersList"];
+
+            allWorkers.FirstOrDefault(x => x.Id == workerId).InProject = true;
+
+            return PartialView("_UsersListPartialView", allWorkers);
         }
+
 
         [HttpGet]
         public ActionResult Details(Guid id)
@@ -123,7 +117,16 @@ namespace TrackIt.UI.Controllers
 
             Project project = _repo.GetById(id);
 
+            model.Name = project.ProjectName;
+            model.Description = project.Description;
+            model.Workers = project.Workers.Select( x => {
+                return UserManager.Users.FirstOrDefault(y => y.Id == x.WorkerId);
+            } ).ToList();
 
+            model.Tickets = project.Tickets.Select(x =>
+            {
+                return new TicketModel() { Name = x.Name, Description = x.Description };
+            }).ToList();
 
             return View(model);
         }

@@ -1,0 +1,26 @@
+﻿@model ICollection<TrackIt.UI.Models.ApplicationUserViewModel>
+
+
+<table class="table">
+    <tr>
+        
+        <th>
+            Id
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    @if (item.InProject != false)
+    {
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+        </td>
+    }
+</tr>
+}
+
+</table>
