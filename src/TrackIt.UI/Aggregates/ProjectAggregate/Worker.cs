@@ -5,9 +5,10 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 {
     public class Worker
     {
-        public Worker(string id)
+        public Worker(string workerId)
         {
-            Id = id;
+            this.Id = Guid.NewGuid();
+            WorkerId = workerId;
         }
 
         public Worker()
@@ -15,8 +16,9 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 
         }
 
-        public string Id { get; protected set; }
+        public Guid Id { get; protected set; }
         public Guid ProjectId { get; protected set; }
+        public string WorkerId { get; protected set; }
         public virtual Project Project { get; protected set; }
 
 

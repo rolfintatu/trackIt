@@ -85,7 +85,7 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
         public void DismissWorker(string workerId)
         {
 
-            Worker worker = _workers.FirstOrDefault(x => x.Id == workerId);
+            Worker worker = _workers.FirstOrDefault(x => x.WorkerId == workerId);
 
             if (!(worker is null))
                 _workers.Remove(worker);
