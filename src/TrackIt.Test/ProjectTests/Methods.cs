@@ -52,7 +52,7 @@ namespace TrackIt.Test.ProjectTests
 
             Worker fakeWorker = fakeProject.Workers.First();
 
-            fakeProject.DismissWorker(fakeWorker.Id);
+            fakeProject.DismissWorker(fakeWorker.WorkerId);
 
             Assert.AreEqual(0, fakeProject.Workers.Count());
         }
