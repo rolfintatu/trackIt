@@ -5,9 +5,10 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
 {
     public class Ticket
     {
-        public Ticket() { }
+        public Ticket() { this.Id = Guid.NewGuid(); }
 
         public Ticket(Guid projectId, string name, string description, TicketState ticketState, string assignTo)
+            :this()
         {
             ProjectId = projectId;
             Name = name;
