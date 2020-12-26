@@ -5,32 +5,58 @@
 }
 
 
-<div>
-    <h4>ProjectDetailsViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Overview</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Tickets</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Settings</a>
+    </div>
+</nav>
+<div class="tab-content p-5" id="nav-tabContent">
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="container-fluid">
+            <h1>@Model.Name</h1>
+            <hr />
+            <p>@Model.Description</p>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+        <br />
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+        <div class="container-fluid">
+            @foreach (var worker in Model.Workers)
+            {
+                <p>@worker.UserName</p>
+            }
+        </div>
+    </div>
 
-    </dl>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+        @Html.ActionLink("Create Ticket", "CreateTicket", new  { projectId = Model.ProjectId })
+
+        <hr/>
+
+        <table>
+            <tr>
+                <td>Name</td>
+            </tr>
+
+            @foreach (var item in Model.Tickets)
+            {
+                <tr>
+                    <td>@Html.ActionLink(item.Name, "Ticket", new { Model.ProjectId, TicketId = item.Id })</td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
 </div>
 
-@foreach (var worker in Model.Workers)
-{
-    <p>@worker.Id</p>
-}
+
+
 
 

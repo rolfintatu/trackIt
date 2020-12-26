@@ -1,4 +1,4 @@
-﻿@model ICollection<TrackIt.UI.Models.ApplicationUserViewModel>
+﻿@model IDictionary<Guid, List<TrackIt.UI.Models.ApplicationUserViewModel>>
 
 
 <table class="table" id="replace_table">
@@ -13,7 +13,8 @@
 
     </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in Model.First().Value)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -21,12 +22,12 @@
             <td>
                 @if (item.InProject == false)
                 {
-                    @Ajax.ActionLink("Add", "AddWorkerToProject", new { workerId = item.Id, workers = Model }, new AjaxOptions
+                    @Ajax.ActionLink("Add", "AssignWorkerToTicket", new { workerId = item.Id, projectId = Model.First().Key }, new AjaxOptions
                     { OnSuccess = "OnSuccess", UpdateTargetId = "replace_table", InsertionMode = InsertionMode.ReplaceWith })
                 }
                 else
                 {
-                    @Ajax.ActionLink("Remove", "RemoveWorkerFromProject", new { workerId = item.Id }, new AjaxOptions() 
+                    @Ajax.ActionLink("Remove", "", new { workerId = item.Id }, new AjaxOptions()
                     { OnSuccess = "OnSuccess", UpdateTargetId = "replace_table", InsertionMode = InsertionMode.ReplaceWith })
                 }
             </td>

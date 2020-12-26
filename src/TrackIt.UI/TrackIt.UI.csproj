@@ -200,12 +200,14 @@
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\CreateProjectViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
+    <Compile Include="Models\CreateTicketViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageRolesViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProjectDetailsViewModel.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
     <Compile Include="Models\RoleListViewModel.cs" />
+    <Compile Include="Models\TicketDetailsViewModel.cs" />
     <Compile Include="Models\UserRolesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -382,7 +384,10 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_UsersListPartialView.cshtml" />
-    <Content Include="Views\Shared\_ProjectWorkersPartialView.cshtml" />
+    <Content Include="Views\Shared\_TicketSectionPartialView.cshtml" />
+    <Content Include="Views\Project\CreateTicket.cshtml" />
+    <Content Include="Views\Shared\_WorkersListForTicket.cshtml" />
+    <Content Include="Views\Project\Ticket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

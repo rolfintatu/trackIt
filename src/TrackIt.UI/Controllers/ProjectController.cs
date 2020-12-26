@@ -77,6 +77,25 @@ namespace TrackIt.UI.Controllers
                 model.Workers = (List<ApplicationUserViewModel>)Session["workersList"];
             }
 
+            model.Workers = model.Workers.OrderBy(x => x.InProject == false).ToList();
+
+            return View(model);
+        }
+
+        public ActionResult Ticket(Guid ProjectId, Guid TicketId)
+        {
+            var project = _repo.GetById(ProjectId);
+            var ticket = project.Tickets.Where(x => x.Id == TicketId).FirstOrDefault();
+
+            var model = new TicketDetailsViewModel
+            {
+                Id = ticket.Id,
+                Name = ticket.Name,
+                Description = ticket.Description,
+                Status = ticket.TicketState.ToString(),
+                AssingTo = ticket.AssignTo
+            };
+
             return View(model);
         }
 
@@ -97,6 +116,68 @@ namespace TrackIt.UI.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public ActionResult CreateTicket(Guid projectId)
+        {
+            CreateTicketViewModel model = new CreateTicketViewModel();
+
+            if(Session["availableWorkers"] is null)
+            {
+                var availableWorkers = _repo.GetById(projectId).Workers;
+
+                model.AvailaibleWorkers = availableWorkers.Select(x => {
+                    return new ApplicationUserViewModel() { Id = x.WorkerId.ToString(), Image = null, InProject = false, Name = null };
+                }).ToList();
+
+                Session["availableWorkers"] = model.AvailaibleWorkers;
+            }
+            else
+            {
+                model.AvailaibleWorkers = (List<ApplicationUserViewModel>)Session["availableWorkers"];
+            }
+
+            model.ProjectId = projectId;
+            model.AvailaibleWorkers = model.AvailaibleWorkers.OrderBy(x => x.InProject == false).ToList();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateTicket(CreateTicketViewModel model)
+        {
+            var project = _repo.GetById(model.ProjectId);
+
+            project.CreateTicket(model.Name, model.Description, model.AvailaibleWorkers.First().Id);
+
+            await _repo.Update(project);
+
+            Session.Clear();
+
+            return RedirectToAction($"Details/{ model.ProjectId }");
+        }
+
+        public PartialViewResult AssignWorkerToTicket(string workerId, string projectId)
+        {
+
+            var workers = (List<ApplicationUserViewModel>)Session["availableWorkers"];
+
+            if(workers.Any(x => x.InProject == true && x.Id != workerId))
+            {
+                workers.Where(x => x.InProject == true && x.Id != workerId).ToList().ForEach(y => y.InProject = false);
+                workers.FirstOrDefault(x => x.Id == workerId).InProject = true;
+            }
+            else
+            {
+                workers.FirstOrDefault(x => x.Id == workerId).InProject = true;
+            }
+
+
+            var returnModel = new Dictionary<Guid, List<ApplicationUserViewModel>>();
+            returnModel.Add(Guid.Parse(projectId), workers.ToList());
+
+            return PartialView("_WorkersListForTicket", returnModel);
+        }
+
+
         public PartialViewResult AddWorkerToProject(string workerId)
         {
             List<ApplicationUserViewModel> workerAdded = new List<ApplicationUserViewModel>();
@@ -109,6 +190,19 @@ namespace TrackIt.UI.Controllers
             return PartialView("_UsersListPartialView", allWorkers);
         }
 
+        public PartialViewResult RemoveWorkerFromProject(string workerId)
+        {
+            List<ApplicationUserViewModel> workerAdded = new List<ApplicationUserViewModel>();
+            var newWorker = UserManager.Users.Where(x => x.Id == workerId).FirstOrDefault();
+
+            var allWorkers = (List<ApplicationUserViewModel>)Session["workersList"];
+            var worker = allWorkers.FirstOrDefault(x => x.Id == workerId);
+
+            if (worker.InProject == true)
+                worker.InProject = false;
+
+            return PartialView("_UsersListPartialView", allWorkers);
+        }
 
         [HttpGet]
         public ActionResult Details(Guid id)
@@ -119,13 +213,15 @@ namespace TrackIt.UI.Controllers
 
             model.Name = project.ProjectName;
             model.Description = project.Description;
+            model.ProjectId = project.Id;
+
             model.Workers = project.Workers.Select( x => {
                 return UserManager.Users.FirstOrDefault(y => y.Id == x.WorkerId);
             } ).ToList();
 
             model.Tickets = project.Tickets.Select(x =>
             {
-                return new TicketModel() { Name = x.Name, Description = x.Description };
+                return new TicketModel() { Name = x.Name, Description = x.Description, Id = x.Id };
             }).ToList();
 
             return View(model);

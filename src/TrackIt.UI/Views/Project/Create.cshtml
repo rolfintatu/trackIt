@@ -5,7 +5,6 @@
 }
 
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -78,13 +77,9 @@
 </div>
 
 
-
-
 @section Scripts {
     <script>
-        function OnSuccess(id) {
-            //event.preventDefault;
-            //$("#update_table").append("<p>" + id + "</p>");
+        function OnSuccess() {
             $("#update_table").load(location.href + " #update_table");
         }
 

@@ -14,6 +14,7 @@ namespace TrackIt.UI.Models
             Tickets = new List<TicketModel>();
         }
 
+        public Guid ProjectId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -25,6 +26,7 @@ namespace TrackIt.UI.Models
 
     public class TicketModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
