@@ -25,20 +25,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Setup MSBuild Path
-        uses: warrenbuckley/Setup-MSBuild@v1
-       
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.2
-
       - name: Restore NuGet Packages
-        run: nuget restore ~/TrackIt.UI.sln
+        run: nuget restore trackIt.sln
+
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1
 
       - name: Build and Publish Web App
-        run: msbuild ~/TrackIt.UI.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: published_webapp
-          path: bin\Release\Publish
+        run: msbuild trackIt.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
