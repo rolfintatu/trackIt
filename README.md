@@ -9,7 +9,7 @@
 The purpose of this web application is to improve team's workflow by simply tracking bugs and assign them to members of your team.
 
 # Template Structure
-- **TrackIt.UI**: A ASP.NET MVC project.
+- **TrackIt.UI**: An ASP.NET MVC project.
   - Aggregates folder is the core of the application;
   - In Infrastructure folder can be found repositories.
  - **TrackIt.Test**: A Unit Test project which containes test for aggregates.
