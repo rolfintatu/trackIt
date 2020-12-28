@@ -75,7 +75,13 @@ namespace TrackIt.UI.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = SignInStatus.RequiresVerification;
+
+            var user = UserManager.Users.FirstOrDefault(x => x.Email == model.Email);
+
+            if (user == null) result = SignInStatus.Failure;
+            else result = await SignInManager.PasswordSignInAsync(user?.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -151,8 +157,13 @@ namespace TrackIt.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                UserManager.UserValidator = new UserValidator<ApplicationUser>(UserManager) { AllowOnlyAlphanumericUserNames = false };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var result = new IdentityResult();
+
+                if (UserManager.Users.Any(x => x.Email == model.Email)) result = new IdentityResult(new string[] { "This email is already taken." });
+                else result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -165,6 +176,7 @@ namespace TrackIt.UI.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+
                 AddErrors(result);
             }
 
