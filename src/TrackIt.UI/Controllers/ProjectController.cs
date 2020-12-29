@@ -178,6 +178,18 @@ namespace TrackIt.UI.Controllers
         }
 
 
+        public PartialViewResult DismissWorkerFromTicket(string workerId, string projectId)
+        {
+            var workers = (List<ApplicationUserViewModel>)Session["availableWorkers"];
+
+            if (workers.Any(x => x.Id == workerId))
+                workers.FirstOrDefault(x => x.Id == workerId).InProject = false;
+
+            var returnModel = new Dictionary<Guid, List<ApplicationUserViewModel>>();
+            returnModel.Add(Guid.Parse(projectId), workers.ToList());
+            return PartialView("_WorkersListForTicket", returnModel);
+        }
+
         public PartialViewResult AddWorkerToProject(string workerId)
         {
             List<ApplicationUserViewModel> workerAdded = new List<ApplicationUserViewModel>();

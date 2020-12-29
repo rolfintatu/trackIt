@@ -27,8 +27,8 @@
                 }
                 else
                 {
-                    @Ajax.ActionLink("Remove", "", new { workerId = item.Id }, new AjaxOptions()
-                    { OnSuccess = "OnSuccess", UpdateTargetId = "replace_table", InsertionMode = InsertionMode.ReplaceWith })
+                    @Ajax.ActionLink("Remove", "DismissWorkerFromTicket", new { workerId = item.Id, projectId = Model.First().Key }, new AjaxOptions()
+               { OnSuccess = "OnSuccess", UpdateTargetId = "replace_table", InsertionMode = InsertionMode.ReplaceWith })
                 }
             </td>
         </tr>
