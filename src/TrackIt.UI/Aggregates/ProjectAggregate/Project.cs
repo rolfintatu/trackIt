@@ -74,7 +74,7 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
             if (_workers is null)
                 _workers = new List<Worker>();
 
-            if (!_workers.Any(x => x.Id.Equals(workerId)))
+            if (!_workers.Any(x => x.WorkerId.Equals(workerId)))
                 _workers.Add(new Worker(workerId));
             else
                 throw new WorkerAlreadyAssignedException();
@@ -88,7 +88,9 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
             Worker worker = _workers.FirstOrDefault(x => x.WorkerId == workerId);
 
             if (!(worker is null))
-                _workers.Remove(worker);
+            {
+                worker.DbState = DbState.Deleted;
+            }
             else
                 throw new WorkerIsNotAssignException();
 
