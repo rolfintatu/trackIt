@@ -33,6 +33,10 @@ namespace TrackIt.UI.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Worker>().Property(x => x.ProjectId).IsOptional();
+            modelBuilder.Entity<Worker>().Ignore(x => x.DbState);
+            modelBuilder.Entity<Project>().Ignore(x => x.workersChange).Ignore(x => x.ticketsChagne);
+            modelBuilder.Entity<Ticket>().Ignore(x => x.DbState);
             base.OnModelCreating(modelBuilder);
         }
 
