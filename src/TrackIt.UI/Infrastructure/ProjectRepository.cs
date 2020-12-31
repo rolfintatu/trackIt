@@ -28,57 +28,65 @@ namespace TrackIt.UI.Infrastructure
             }
             else
             {
-                _context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
+                try
+                {
+                    _context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
 
-                if(obj.ticketsChagne)
-                {
-                    foreach (var ticket in obj.Tickets)
-                {
-                    switch (ticket.DbState)
+                    if(obj.ticketsChagne)
                     {
-                        case Aggregates.Enums.DbState.Added:
-                            _context.Entry(ticket).State = System.Data.Entity.EntityState.Added;
-                            break;
-                        case Aggregates.Enums.DbState.Deleted:
-                            _context.Entry(ticket).State = System.Data.Entity.EntityState.Deleted;
-                            break;
-                        case Aggregates.Enums.DbState.Modified:
-                            _context.Entry(ticket).State = System.Data.Entity.EntityState.Modified;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                }
-
-                if (obj.workersChange)
-                {
-                    foreach (var worker in obj.Workers)
-                {
-                    switch (worker.DbState)
+                        foreach (var ticket in obj.Tickets)
                     {
-                        case Aggregates.Enums.DbState.Added:
-                            _context.Entry(worker).State = System.Data.Entity.EntityState.Added;
-                            break;
-                        case Aggregates.Enums.DbState.Deleted:
-                            _context.Entry(worker).State = System.Data.Entity.EntityState.Deleted;
-                            break;
-                        case Aggregates.Enums.DbState.Modified:
-                            _context.Entry(worker).State = System.Data.Entity.EntityState.Modified;
-                            break;
-                        default:
-                            break;
+                        switch (ticket.DbState)
+                        {
+                            case Aggregates.Enums.DbState.Added:
+                                _context.Entry(ticket).State = System.Data.Entity.EntityState.Added;
+                                break;
+                            case Aggregates.Enums.DbState.Deleted:
+                                _context.Entry(ticket).State = System.Data.Entity.EntityState.Deleted;
+                                break;
+                            case Aggregates.Enums.DbState.Modified:
+                                _context.Entry(ticket).State = System.Data.Entity.EntityState.Modified;
+                                break;
+                            default:
+                                break;
+                        }
                     }
+                    }
+
+                    if (obj.workersChange)
+                    {
+                        for(int i = 0; i <= obj.Workers.Count - 1; i++)
+                        {
+                            switch (obj.Workers[i].DbState)
+                            {
+                                case Aggregates.Enums.DbState.Added:
+                                    _context.Entry(obj.Workers[i]).State = System.Data.Entity.EntityState.Added;
+                                    break;
+                                case Aggregates.Enums.DbState.Deleted:
+                                    _context.Entry(obj.Workers[i]).State = System.Data.Entity.EntityState.Deleted;
+                                    break;
+                                case Aggregates.Enums.DbState.Modified:
+                                    _context.Entry(obj.Workers[i]).State = System.Data.Entity.EntityState.Modified;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    await _context.SaveChangesAsync();
                 }
+                catch(Exception ex)
+                {
+                    throw;
                 }
 
-                await _context.SaveChangesAsync();
             }
         }
 
         public Task<List<Project>> GetListAsync()
         {
-            List<Project> projects = _context.Projects.ToList();
+            List<Project> projects = _context.Projects
+                .ToList();
 
             return Task.FromResult(projects);
         }
