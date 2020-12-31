@@ -387,6 +387,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_UsersListPartialView.cshtml" />
+    <Content Include="Views\Shared\_ProjectWorkersParialView.cshtml" />
     <Content Include="Views\Shared\_TicketSectionPartialView.cshtml" />
     <Content Include="Views\Project\CreateTicket.cshtml" />
     <Content Include="Views\Shared\_WorkersListForTicket.cshtml" />

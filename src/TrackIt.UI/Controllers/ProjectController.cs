@@ -116,7 +116,6 @@ namespace TrackIt.UI.Controllers
             return RedirectToAction("Index");
         }
 
-
         public ActionResult CreateTicket(Guid projectId)
         {
             CreateTicketViewModel model = new CreateTicketViewModel();
@@ -177,7 +176,6 @@ namespace TrackIt.UI.Controllers
             return PartialView("_WorkersListForTicket", returnModel);
         }
 
-
         public PartialViewResult DismissWorkerFromTicket(string workerId, string projectId)
         {
             var workers = (List<ApplicationUserViewModel>)Session["availableWorkers"];
@@ -237,6 +235,71 @@ namespace TrackIt.UI.Controllers
             }).ToList();
 
             return View(model);
+        }
+
+        public PartialViewResult GetAllWorkers(List<ApplicationUser> workersInProject, Guid projectId)
+        {
+            var model = new List<ApplicationUserViewModel>();
+
+            model = UserManager.Users.ToList().Select(x =>
+            {
+                return new ApplicationUserViewModel { 
+                    Id = x.Id, 
+                    InProject = workersInProject.Any(y => y.Id == x.Id) ? true : false, 
+                    Name = x.UserName 
+                };
+            }).ToList();
+
+            var result = new Dictionary<Guid, List<ApplicationUserViewModel>>();
+            result.Add(projectId, model);
+
+            return PartialView("_ProjectWorkersParialView", result);
+        }
+
+        public async Task<PartialViewResult> AddNewWorkerToProject(string workerId, string projectId)
+        {
+            Guid projectIdGuid = Guid.Parse(projectId);
+            var project = _repo.GetById(projectIdGuid);
+            project.AssignNewWorker(workerId);
+            await _repo.Update(project);
+
+            Details(projectIdGuid);
+
+            var result = project.Workers.Select(x =>
+            {
+                return new ApplicationUserViewModel { Id = x.Id.ToString(), Name = null, InProject = true };
+            }).ToList();
+
+            var resultList = new Dictionary<Guid, List<ApplicationUserViewModel>>();
+            resultList.Add(Guid.Empty, result);
+
+            return PartialView("_ProjectWorkersParialView", resultList);
+        }
+
+        public async Task<PartialViewResult> DismissWorkerFromProject(string workerId, string projectId)
+        {
+            try
+            {
+                Guid projectIdGuid = Guid.Parse(projectId);
+                var project = _repo.GetById(projectIdGuid);
+                project.DismissWorker(workerId);
+                await _repo.Update(project);
+
+                var result = project.Workers.Select(x =>
+                {
+                    return new ApplicationUserViewModel { Id = x.Id.ToString(), Name = null, InProject = true };
+                }).ToList();
+
+                var resultList = new Dictionary<Guid, List<ApplicationUserViewModel>>();
+                resultList.Add(Guid.Empty, result);
+
+                return PartialView("_ProjectWorkersParialView", resultList);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+
         }
     }
 }

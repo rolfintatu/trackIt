@@ -6,12 +6,17 @@
 
 
 <nav>
+
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Overview</a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Tickets</a>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Settings</a>
+
     </div>
+
 </nav>
+
 <div class="tab-content p-5" id="nav-tabContent">
 
     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -20,22 +25,13 @@
             <hr />
             <p>@Model.Description</p>
         </div>
-
-        <br />
-
-        <div class="container-fluid">
-            @foreach (var worker in Model.Workers)
-            {
-                <p>@worker.UserName</p>
-            }
-        </div>
     </div>
 
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
-        @Html.ActionLink("Create Ticket", "CreateTicket", new  { projectId = Model.ProjectId })
+        @Html.ActionLink("Create Ticket", "CreateTicket", new { projectId = Model.ProjectId })
 
-        <hr/>
+        <hr />
 
         <table>
             <tr>
@@ -53,10 +49,52 @@
 
     </div>
 
-    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+        <div id="update_workers" class="container-fluid">
+
+            @foreach (var worker in Model.Workers)
+            {
+                <p>@worker.UserName</p>
+            }
+
+        </div>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Assign Worker
+        </button>
+
+    </div>
+
 </div>
 
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-greenblue">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="refresh_modal">
+                @Html.Action("GetAllWorkers", "Project", new { workersInProject = Model.Workers, projectId = Model.ProjectId })
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-
+@section Scripts {
+    <script>
+        function OnSuccess() {
+            $("#update_workers").load(location.href + " #update_workers");
+            $("#refresh_modal").load(location.href + " #refresh_modal");
+        }
+    </script>
+}
