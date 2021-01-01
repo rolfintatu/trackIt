@@ -5,50 +5,60 @@
     dictionary.Add(Model.ProjectId, Model.AvailaibleWorkers);
 }
 
+<h2 control-label col-md-5>Create Ticket</h2>
+
+<hr style="border:1px solid #46405c; opacity: 0.5; border-radius: 10px;" />
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+<div class="form-horizontal">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Assign Worker
-        </button>
-
-        <div id="update_table">
-            @for (int i = 0; i <= Model.AvailaibleWorkers.Count - 1; i++)
-            {
-                if (Model.AvailaibleWorkers[i].InProject == true)
-                {
-                    @Html.HiddenFor(model => model.AvailaibleWorkers[i].Id)
-                    <p>@Model.AvailaibleWorkers[i].Id</p>
-                }
-            }
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control col-xl-10", @style = "min-height: 150px;" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <hr style="border:1px solid #46405c; opacity: 0.5; border-radius: 10px;" />
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Assign Worker
+    </button>
+
+    <div id="update_table">
+        @for (int i = 0; i <= Model.AvailaibleWorkers.Count - 1; i++)
+        {
+            if (Model.AvailaibleWorkers[i].InProject == true)
+            {
+                @Html.HiddenFor(model => model.AvailaibleWorkers[i].Id)
+                <p>@Model.AvailaibleWorkers[i].Id</p>
+            }
+        }
+    </div>
+
+    <hr style="border:1px solid #46405c; opacity: 0.5; border-radius: 10px;" />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-success" />
+        </div>
+    </div>
+</div>
 }
 
 

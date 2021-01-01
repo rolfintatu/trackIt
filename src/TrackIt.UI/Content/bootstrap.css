@@ -13,6 +13,7 @@
   --orange: #fd7e14;
   --yellow: #ffc107;
   --green: #28a745;
+  --darkgreen: #46405c;
   --teal: #20c997;
   --cyan: #17a2b8;
   --white: #fff;
@@ -2003,19 +2004,18 @@ pre code {
 }
 
 .form-control {
-  display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #fff;
+    background-color: #46405c;
+    border-radius: 0.25rem;
+    border: hidden;
+    box-shadow: inset 0px 0px 3px #212529;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2035,15 +2035,15 @@ pre code {
 }
 
 .form-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
-  outline: 0;
+  color: #fff;
+  background-color: #46405c;
+  outline-style: none;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  color: #fff;
 }
 
 .form-control::-webkit-input-placeholder {
-  color: #6c757d;
+  color: #fff;
   opacity: 1;
 }
 
@@ -2121,10 +2121,8 @@ select.form-control:focus::-ms-value {
   margin-bottom: 0;
   font-size: 1rem;
   line-height: 1.5;
-  color: #212529;
+  color: #fff;
   background-color: transparent;
-  border: solid transparent;
-  border-width: 1px 0;
 }
 
 .form-control-plaintext.form-control-sm, .form-control-plaintext.form-control-lg {
@@ -4227,10 +4225,12 @@ input[type="button"].btn-block {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+  color:white;
 }
 
 .nav-link:hover, .nav-link:focus {
   text-decoration: none;
+  color: #9daebf;
 }
 
 .nav-link.disabled {
@@ -4240,7 +4240,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 2px solid #46405c;
 }
 
 .nav-tabs .nav-item {
@@ -4254,7 +4254,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  border-color: #e9ecef #e9ecef #dee2e6;
+  /*border-color: #e9ecef #e9ecef #dee2e6;*/
 }
 
 .nav-tabs .nav-link.disabled {
@@ -4265,9 +4265,8 @@ input[type="button"].btn-block {
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color: #495057;
-  background-color: #fff;
-  border-color: #dee2e6 #dee2e6 #fff;
+  color: #fff;
+  background-color: #46405c;
 }
 
 .nav-tabs .dropdown-menu {
@@ -6013,18 +6012,18 @@ a.close.disabled {
 }
 
 .modal-content {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  outline: 0;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #46405c;
+    border-radius: 0.3rem;
+    outline: 0;
 }
 
 .modal-backdrop {
@@ -6053,7 +6052,7 @@ a.close.disabled {
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 1rem 1rem;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #181428;
   border-top-left-radius: calc(0.3rem - 1px);
   border-top-right-radius: calc(0.3rem - 1px);
 }
@@ -6061,6 +6060,7 @@ a.close.disabled {
 .modal-header .close {
   padding: 1rem 1rem;
   margin: -1rem -1rem -1rem auto;
+  color:white;
 }
 
 .modal-title {
@@ -6085,7 +6085,7 @@ a.close.disabled {
   -ms-flex-pack: end;
   justify-content: flex-end;
   padding: 0.75rem;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid #181428;
   border-bottom-right-radius: calc(0.3rem - 1px);
   border-bottom-left-radius: calc(0.3rem - 1px);
 }
