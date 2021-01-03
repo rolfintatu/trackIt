@@ -24,7 +24,7 @@ After create the database you can start the application. If when it start will s
 
 ![create_project](https://user-images.githubusercontent.com/70466418/103475556-b28e7800-4db6-11eb-8dec-d337c5e47389.PNG)
 
-First time when you will navigate to "Project" page this will be empty, so you have to create a project.
+First time when you will navigate to "Projects", the page will be empty, so you have to create a project.
 
 For creating a new project press on "Create New" and will redirect you to "Create" page:
 
