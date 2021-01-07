@@ -54,7 +54,7 @@ namespace TrackIt.Test.ProjectTests
 
             fakeProject.DismissWorker(fakeWorker.WorkerId);
 
-            Assert.AreEqual(0, fakeProject.Workers.Count());
+            Assert.AreEqual(DbState.Deleted, fakeWorker.DbState);
         }
 
         [TestMethod]
