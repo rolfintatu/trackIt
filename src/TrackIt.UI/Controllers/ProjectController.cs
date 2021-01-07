@@ -15,18 +15,14 @@ namespace TrackIt.UI.Controllers
     public class ProjectController : Controller
     {
 
-        private ProjectRepository _repo;
+        private IProjectRepository _repo;
         private ApplicationUserManager _userManager;
 
-        public ProjectController()
-        {
-            _repo = new ProjectRepository(new ProjectContext());
-        }
+        public ProjectController() {  }
 
-        public ProjectController(ApplicationUserManager userManager) 
+        public ProjectController(IProjectRepository repo) 
         {
-            _repo = new ProjectRepository(new ProjectContext());
-            UserManager = userManager;
+            _repo = repo;
         }
 
         public ApplicationUserManager UserManager

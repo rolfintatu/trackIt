@@ -1,5 +1,4 @@
-﻿ using System.Data.Entity;
-using System.Linq;
+﻿using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -24,8 +23,7 @@ namespace TrackIt.UI.Models
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
+        { }
 
         DbSet<Project> Projects { get; set; }
         DbSet<Worker> Workers { get; set; }
@@ -48,17 +46,12 @@ namespace TrackIt.UI.Models
 
     public class ApplicationRole : IdentityRole
     {
-
         public ApplicationRole()
-        {
-
-        }
+        { }
 
         public ApplicationRole(string roleName)
             :base(roleName)
-        {
-
-        }
+        { }
     }
 
 }

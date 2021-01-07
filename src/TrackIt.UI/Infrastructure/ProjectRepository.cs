@@ -9,7 +9,7 @@ using TrackIt.UI.Models;
 
 namespace TrackIt.UI.Infrastructure
 {
-    public class ProjectRepository
+    public class ProjectRepository : IProjectRepository
     {
         private ProjectContext _context;
 
@@ -32,30 +32,30 @@ namespace TrackIt.UI.Infrastructure
                 {
                     _context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
 
-                    if(obj.ticketsChagne)
+                    if (obj.ticketsChagne)
                     {
                         foreach (var ticket in obj.Tickets)
-                    {
-                        switch (ticket.DbState)
                         {
-                            case Aggregates.Enums.DbState.Added:
-                                _context.Entry(ticket).State = System.Data.Entity.EntityState.Added;
-                                break;
-                            case Aggregates.Enums.DbState.Deleted:
-                                _context.Entry(ticket).State = System.Data.Entity.EntityState.Deleted;
-                                break;
-                            case Aggregates.Enums.DbState.Modified:
-                                _context.Entry(ticket).State = System.Data.Entity.EntityState.Modified;
-                                break;
-                            default:
-                                break;
+                            switch (ticket.DbState)
+                            {
+                                case Aggregates.Enums.DbState.Added:
+                                    _context.Entry(ticket).State = System.Data.Entity.EntityState.Added;
+                                    break;
+                                case Aggregates.Enums.DbState.Deleted:
+                                    _context.Entry(ticket).State = System.Data.Entity.EntityState.Deleted;
+                                    break;
+                                case Aggregates.Enums.DbState.Modified:
+                                    _context.Entry(ticket).State = System.Data.Entity.EntityState.Modified;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
                     }
 
                     if (obj.workersChange)
                     {
-                        for(int i = 0; i <= obj.Workers.Count - 1; i++)
+                        for (int i = 0; i <= obj.Workers.Count - 1; i++)
                         {
                             switch (obj.Workers[i].DbState)
                             {
@@ -75,7 +75,7 @@ namespace TrackIt.UI.Infrastructure
                     }
                     await _context.SaveChangesAsync();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw;
                 }
