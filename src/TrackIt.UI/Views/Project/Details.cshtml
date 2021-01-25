@@ -68,19 +68,25 @@
 
     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 
-        <div id="update_workers" class="container-fluid">
+        <div class="card bg-transparent border-dark p-3">
 
-            @foreach (var worker in Model.Workers)
-            {
-                <p>@worker.UserName</p>
-            }
+            <div id="update_workers" class="container-fluid">
+
+                @foreach (var worker in Model.Workers)
+                {
+                    <h2>@worker.UserName</h2>
+                }
+
+            </div>
+
+            <br/>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Chenge Workers
+            </button>
 
         </div>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Assign Worker
-        </button>
 
         <hr/>
 

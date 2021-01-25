@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using TrackIt.UI.AuthManagers;
+using TrackIt.UI.AuthModels;
 using TrackIt.UI.Models;
 
 namespace TrackIt.UI.Controllers
@@ -15,41 +17,15 @@ namespace TrackIt.UI.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager SignInManager;
+        private ApplicationUserManager UserManager;
 
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
-        }
-
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
         }
 
         //
@@ -419,16 +395,16 @@ namespace TrackIt.UI.Controllers
         {
             if (disposing)
             {
-                if (_userManager != null)
+                if (UserManager != null)
                 {
-                    _userManager.Dispose();
-                    _userManager = null;
+                    UserManager.Dispose();
+                    UserManager = null;
                 }
 
-                if (_signInManager != null)
+                if (SignInManager != null)
                 {
-                    _signInManager.Dispose();
-                    _signInManager = null;
+                    SignInManager.Dispose();
+                    SignInManager = null;
                 }
             }
 

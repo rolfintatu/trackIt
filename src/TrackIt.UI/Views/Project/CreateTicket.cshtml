@@ -46,7 +46,7 @@
             if (Model.AvailaibleWorkers[i].InProject == true)
             {
                 @Html.HiddenFor(model => model.AvailaibleWorkers[i].Id)
-                <p>@Model.AvailaibleWorkers[i].Id</p>
+                <p>@Model.AvailaibleWorkers[i].Name</p>
             }
         }
     </div>

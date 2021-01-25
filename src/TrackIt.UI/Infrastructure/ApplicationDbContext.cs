@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using TrackIt.UI.Aggregates.ProjectAggregate;
+using TrackIt.UI.AuthModels;
 
 namespace TrackIt.UI.Infrastructure
 {
-    public class ProjectContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public ApplicationDbContext()
+            : base("DefaultConnection", throwIfV1Schema: false)
+        { }
 
-        public ProjectContext()
-            :base("DefaultConnection") { }
-
-        public DbSet<Project> Projects { get; set; }
-
+        DbSet<Project> Projects { get; set; }
+        DbSet<Worker> Workers { get; set; }
+        DbSet<Ticket> Tickets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -97,6 +97,12 @@ namespace TrackIt.UI.Aggregates.ProjectAggregate
             workersChange = true;
         }
 
+        public void SetWorkers(List<Worker> newWorkers)
+        {
+            _workers.Clear();
+            this._workers = newWorkers;
+        }
+
         public static Project CreateInstance(string projectName, string description)
         {
 

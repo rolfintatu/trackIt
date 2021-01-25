@@ -13,7 +13,7 @@ namespace TrackIt.UI
     {
         protected void Application_Start()
         {
-            IoC.Config();
+            IoC.RegisterDependencies();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

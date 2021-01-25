@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrackIt.UI.Aggregates.ProjectAggregate;
+using TrackIt.UI.Models;
 
 namespace TrackIt.UI.Infrastructure
 {

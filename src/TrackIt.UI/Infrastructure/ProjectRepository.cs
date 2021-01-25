@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Owin;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using TrackIt.UI.Aggregates.ProjectAggregate;
+using TrackIt.UI.AuthManagers;
 using TrackIt.UI.Models;
 
 namespace TrackIt.UI.Infrastructure
@@ -12,10 +14,12 @@ namespace TrackIt.UI.Infrastructure
     public class ProjectRepository : IProjectRepository
     {
         private ProjectContext _context;
+        private ApplicationUserManager _userManager;
 
-        public ProjectRepository(ProjectContext context)
+        public ProjectRepository(ProjectContext context, ApplicationUserManager userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -93,10 +97,24 @@ namespace TrackIt.UI.Infrastructure
 
         public Project GetById(Guid projectId)
         {
-            return _context.Projects.Where(x => x.Id == projectId)
+            var project = _context.Projects.Where(x => x.Id == projectId)
                 .Include(x => x.Workers)
                 .Include(x => x.Tickets)
                 .FirstOrDefault();
+
+            var applicationUsers = _userManager.Users.ToList();
+
+            var workers = project.Workers.Join(applicationUsers, 
+                w => w.WorkerId, 
+                u => u.Id, 
+                (w, u) => { 
+                        w.SetUserName(u.UserName); return w; 
+                    }
+                );
+
+            project.SetWorkers(workers.ToList());
+
+            return project;
         }
 
     }

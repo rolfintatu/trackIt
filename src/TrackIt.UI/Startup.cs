@@ -2,6 +2,7 @@
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(TrackIt.UI.Startup))]
+
 namespace TrackIt.UI
 {
     public partial class Startup

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TrackIt.UI.AuthManagers;
 using TrackIt.UI.Models;
 
 namespace TrackIt.UI.Controllers
@@ -12,41 +14,18 @@ namespace TrackIt.UI.Controllers
     [Authorize]
     public class ManageRolesController : Controller
     {
-        private ApplicationUserManager _userManager;
-        private ApplicationRoleManager _roleManager;
+        private ApplicationUserManager UserManager;
+        private ApplicationRoleManager RoleManager;
+
 
         public ManageRolesController() { }
 
-        public ManageRolesController( ApplicationUserManager userManager, ApplicationRoleManager roleManager )
+        public ManageRolesController(ApplicationRoleManager roleManager, ApplicationUserManager userManager)
         {
             UserManager = userManager;
             RoleManager = roleManager;
         }
 
-        public ApplicationUserManager UserManager {
-            get 
-            {
-                return _userManager ?? HttpContext.GetOwinContext().Get<ApplicationUserManager>();
-            }
-            set 
-            {
-                _userManager = value; 
-            } 
-        }
-
-        public ApplicationRoleManager RoleManager
-        {
-            get
-            {
-                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-            }
-            set
-            {
-                _roleManager = value;
-            }
-        }
-
-        private Dictionary<ApplicationRole, bool> CurrentUserRoles { get; set; }
 
         // GET: ManageRoles
         public ActionResult Index(ManageRolesViewModel model)
@@ -73,7 +52,8 @@ namespace TrackIt.UI.Controllers
 
         public async Task<ActionResult> AddRole(string roleName, string userId)
         {
-            await UserManager.AddToRoleAsync(userId, roleName);
+            if(await RoleManager.RoleExistsAsync(roleName))
+                await UserManager.AddToRoleAsync(userId, roleName);
 
             return RedirectToAction("Index", new ManageRolesViewModel() { CurrentUserId = userId });
         }
@@ -84,7 +64,6 @@ namespace TrackIt.UI.Controllers
 
             return RedirectToAction("Index", new ManageRolesViewModel() { CurrentUserId = userId });
         }
-
 
         private Dictionary<string, bool> GetRoles(string UserId)
         {
@@ -101,6 +80,26 @@ namespace TrackIt.UI.Controllers
             });
 
             return rolesForUser;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (UserManager != null)
+                {
+                    UserManager.Dispose();
+                    UserManager = null;
+                }
+
+                if (RoleManager != null)
+                {
+                    RoleManager.Dispose();
+                    RoleManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

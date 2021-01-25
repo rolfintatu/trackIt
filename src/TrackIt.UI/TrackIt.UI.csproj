@@ -205,10 +205,13 @@
     <Compile Include="Aggregates\ProjectAggregate\Worker.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="AuthManagers\ApplicationSignInManager.cs" />
+    <Compile Include="AuthManagers\ApplicationUserManager.cs" />
+    <Compile Include="AuthManagers\ApplicationRoleManager.cs" />
     <Compile Include="App_Start\IoC.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Infrastructure\ApplicationDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageRolesController.cs" />
@@ -226,7 +229,7 @@
     <Compile Include="Models\CreateProjectViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\CreateTicketViewModel.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="AuthModels\ApplicationUser.cs" />
     <Compile Include="Models\ManageRolesViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProjectDetailsViewModel.cs" />
