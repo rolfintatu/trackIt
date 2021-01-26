@@ -5,40 +5,54 @@
 }
 
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<div class="container-fluid p-0">
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+        <div id="editable" class="d-flex flex-row justify-content-between align-items-center">
+            <h1 class="w-100 h3">@Model.Name</h1>
+            <div>
+                <button id="edittitle" type="button" class="btn btn-primary"> Edit </button>
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+        <form action="" method="post" id="formEdit" class="w-100 d-none flex-row justify-content-between align-items-center">
+            <input type="text" id="focusMe" class="h3 w-100 bg-transparent text-light border-0 p-0" value="@Model.Name" />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AssingTo)
-        </dt>
+            <div class="">
+                <button type="button" class="btn btn-primary"> Save </button>
+                <button id="closeEdit" type="button" class="btn btn-danger"> Close </button>
+            </div>
+        </form>
 
-        <dd>
-            @Html.DisplayFor(model => model.AssingTo)
-        </dd>
+        <div class="bg-success rounded col-sm-1 justify-content-center d-flex">
+            <label class="p-0 mb-1" style="font-size: 1.2rem">@Model.Status</label>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
+    <hr class="card border-secondary border-bottom-0 mt-3 mb-3" />
 
-    </dl>
+    <div class="container p-3">
+        <p class="h4">@Model.Description</p>
+    </div>
+
 </div>
 
+
+<script>
+    var ticketTitle = document.getElementById('edittitle');
+    var closeEdit = document.getElementById('closeEdit');
+
+    ticketTitle.onclick = function() {
+        document.getElementById('editable').classList.replace("d-flex", "d-none");
+        document.getElementById('formEdit').classList.add("d-flex");
+        document.getElementById('focusMe').focus();
+    };
+
+
+    closeEdit.onclick = () => {
+        document.getElementById('editable').classList.replace("d-none", "d-flex");
+        document.getElementById('formEdit').classList.replace("d-flex", "d-none");
+    }
+</script>
